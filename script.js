@@ -42,15 +42,41 @@ function prepareDOMElements() {
 
 function prepareDOMEvents() {
   addTransactionBtn.addEventListener("click", addTransaction);
-  saveBtn.addEventListener("click", save);
+  saveBtn.addEventListener("click", createTransaction);
 }
 
 function addTransaction() {
   addTransactionPanel.style.display = "flex";
 }
 
-function save() {
+function createTransaction() {
   const transaction = document.createElement("div");
-  transaction.setAttribute("class", "transaction");
-  transaction.setAttribute("id", `${id}`);
+  transaction.className = "transaction";
+  transaction.id = id;
+
+  const transactionName = document.createElement("p");
+  transactionName.className = "transaction-name";
+  transactionName.textContent = addNameInput.value;
+
+  const transactionIcon = document.createElement("i");
+  transactionIcon.className = "fas fa-money-bill-wave";
+
+  const transactionAmount = document.createElement("p");
+  transactionAmount.className = "transaction-amount";
+  transactionAmount.textContent = addAmountInput.value + " zł";
+
+  const transactionDelete = document.createElement("button");
+  transactionDelete.className = "delete";
+  const transactionDeleteIcon = document.createElement("i");
+  transactionDeleteIcon.className = "fas fa-times";
+
+  transactionName.insertBefore(transactionIcon, transactionName.firstChild);
+  transaction.appendChild(transactionName);
+  transaction.appendChild(transactionAmount);
+  transactionAmount.appendChild(transactionDelete);
+  transactionDelete.appendChild(transactionDeleteIcon);
+
+  id++;
+  addTransactionPanel.style.display = "none";
+  incomeArea.appendChild(transaction);
 }
