@@ -25,7 +25,6 @@ function main() {
 
 function prepareDOMElements() {
   availableMoneyElement = document.querySelector(".available-money");
-
   addTransactionBtn = document.querySelector(".add-transaction");
   deleteAllBtn = document.querySelector(".delete-all");
   incomeArea = document.querySelector(".income-area");
@@ -51,21 +50,46 @@ function addTransaction() {
 
 function createTransaction() {
   const transaction = document.createElement("div");
-  transaction.className = "transaction";
-  transaction.id = id;
-
   const transactionIcon = document.createElement("i");
-
   const transactionName = document.createElement("p");
+  const transactionAmount = document.createElement("p");
+  const transactionDelete = document.createElement("button");
+  const transactionDeleteIcon = document.createElement("i");
+
+  let amount = +addAmountInput.value;
+
+  switch (addCategoryInput.value) {
+    case "income":
+      transactionIcon.className = "fas fa-money-bill-wave";
+      availableMoney += amount;
+      incomeArea.appendChild(transaction);
+      break;
+    case "shopping":
+      transactionIcon.className = "fas fa-cart-arrow-down";
+      availableMoney -= amount;
+      expensesArea.appendChild(transaction);
+      break;
+    case "food":
+      transactionIcon.className = "fas fa-hamburger";
+      availableMoney -= amount;
+      expensesArea.appendChild(transaction);
+      break;
+    case "cinema":
+      transactionIcon.className = "fas fa-film";
+      availableMoney -= amount;
+      expensesArea.appendChild(transaction);
+      break;
+
+    default:
+      break;
+  }
+  transaction.className = "transaction";
+  transaction.id = ++id;
   transactionName.className = "transaction-name";
   transactionName.textContent = addNameInput.value;
-
-  const transactionAmount = document.createElement("p");
+  transactionAmount.textContent = amount + " zł";
   transactionAmount.className = "transaction-amount";
-
-  const transactionDelete = document.createElement("button");
   transactionDelete.className = "delete";
-  const transactionDeleteIcon = document.createElement("i");
   transactionDeleteIcon.className = "fas fa-times";
 
   transactionName.insertBefore(transactionIcon, transactionName.firstChild);
@@ -74,21 +98,6 @@ function createTransaction() {
   transactionAmount.appendChild(transactionDelete);
   transactionDelete.appendChild(transactionDeleteIcon);
 
-  let amount = +addAmountInput.value;
-
-  switch (addCategoryInput.value) {
-    case "income":
-      transactionIcon.className = "fas fa-money-bill-wave";
-      transactionAmount.textContent = amount + " zł";
-      availableMoney += amount;
-      availableMoneyElement.textContent = availableMoney + " zł";
-      incomeArea.appendChild(transaction);
-      break;
-
-    default:
-      break;
-  }
-
-  id++;
+  availableMoneyElement.textContent = availableMoney + " zł";
   addTransactionPanel.style.display = "none";
 }
