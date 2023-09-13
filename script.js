@@ -1,6 +1,6 @@
 "use strict";
 
-let availableMoney;
+let availableMoneyElement;
 let addTransactionBtn;
 let deleteAllBtn;
 let incomeArea;
@@ -14,8 +14,7 @@ let addCategoryInput;
 let saveBtn;
 let cancelBtn;
 let id = 0;
-
-// addTransactionPanel.style.display = "flex";
+let availableMoney = 0;
 
 document.addEventListener("DOMContentLoaded", main);
 
@@ -25,7 +24,8 @@ function main() {
 }
 
 function prepareDOMElements() {
-  availableMoney = document.querySelector(".available-money");
+  availableMoneyElement = document.querySelector(".available-money");
+
   addTransactionBtn = document.querySelector(".add-transaction");
   deleteAllBtn = document.querySelector(".delete-all");
   incomeArea = document.querySelector(".income-area");
@@ -54,16 +54,14 @@ function createTransaction() {
   transaction.className = "transaction";
   transaction.id = id;
 
+  const transactionIcon = document.createElement("i");
+
   const transactionName = document.createElement("p");
   transactionName.className = "transaction-name";
   transactionName.textContent = addNameInput.value;
 
-  const transactionIcon = document.createElement("i");
-  transactionIcon.className = "fas fa-money-bill-wave";
-
   const transactionAmount = document.createElement("p");
   transactionAmount.className = "transaction-amount";
-  transactionAmount.textContent = addAmountInput.value + " zł";
 
   const transactionDelete = document.createElement("button");
   transactionDelete.className = "delete";
@@ -76,7 +74,21 @@ function createTransaction() {
   transactionAmount.appendChild(transactionDelete);
   transactionDelete.appendChild(transactionDeleteIcon);
 
+  let amount = +addAmountInput.value;
+
+  switch (addCategoryInput.value) {
+    case "income":
+      transactionIcon.className = "fas fa-money-bill-wave";
+      transactionAmount.textContent = amount + " zł";
+      availableMoney += amount;
+      availableMoneyElement.textContent = availableMoney + " zł";
+      incomeArea.appendChild(transaction);
+      break;
+
+    default:
+      break;
+  }
+
   id++;
   addTransactionPanel.style.display = "none";
-  incomeArea.appendChild(transaction);
 }
