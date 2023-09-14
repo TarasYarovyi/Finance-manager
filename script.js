@@ -9,6 +9,9 @@ let deleteBtn;
 let colorButtons;
 let addTransactionPanel;
 let addNameInput;
+let nameInfo;
+let amountInfo;
+let categoryInfo;
 let addAmountInput;
 let addCategoryInput;
 let saveBtn;
@@ -33,22 +36,40 @@ function prepareDOMElements() {
   colorButtons = document.querySelector(".color-buttons");
   addTransactionPanel = document.querySelector(".add-transaction-panel");
   addNameInput = document.querySelector("#name");
+  nameInfo = document.querySelector(".name-info");
   addAmountInput = document.querySelector("#amount");
+  amountInfo = document.querySelector(".amount-info");
   addCategoryInput = document.querySelector("#category");
+  categoryInfo = document.querySelector(".category-info");
   saveBtn = document.querySelector(".save");
   cancelBtn = document.querySelector(".cancel");
 }
 
 function prepareDOMEvents() {
   addTransactionBtn.addEventListener("click", addTransaction);
+  cancelBtn.addEventListener("click", cancelTransaction);
   saveBtn.addEventListener("click", createTransaction);
 }
 
 function addTransaction() {
   addTransactionPanel.style.display = "flex";
 }
+function cancelTransaction() {
+  addTransactionPanel.style.display = "none";
+}
 
 function createTransaction() {
+  if (!addNameInput.value) {
+    animate(nameInfo);
+    return;
+  } else if (!addAmountInput.value) {
+    animate(amountInfo);
+    return;
+  } else if (!addCategoryInput.value) {
+    animate(categoryInfo);
+    return;
+  }
+
   const transaction = document.createElement("div");
   const transactionIcon = document.createElement("i");
   const transactionName = document.createElement("p");
@@ -100,4 +121,14 @@ function createTransaction() {
 
   availableMoneyElement.textContent = availableMoney + " zł";
   addTransactionPanel.style.display = "none";
+  addNameInput.value = "";
+  addAmountInput.value = "";
+  addCategoryInput.value = "";
+}
+
+function animate(element) {
+  element.style.animation = "shake .3s";
+  setTimeout(() => {
+    element.style.animation = "";
+  }, 300);
 }
