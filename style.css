@@ -254,3 +254,26 @@ h2.title {
     background-color: rgb(25, 27, 51);
 
 }
+
+small {
+    position: relative;
+}
+
+@keyframes shake {
+    0% {
+        left: 0px;
+    }
+    25% {
+        left: 20px;
+    }
+    50% {
+        left: 0px;
+    }
+    75% {
+        left: 20px;
+    }
+    100% {
+        left: 0px;
+    }
+  
+}
