@@ -49,6 +49,8 @@ function prepareDOMEvents() {
   addTransactionBtn.addEventListener("click", addTransaction);
   cancelBtn.addEventListener("click", cancelTransaction);
   saveBtn.addEventListener("click", createTransaction);
+  expensesArea.addEventListener("click", deleteTransaction);
+  incomeArea.addEventListener("click", deleteTransaction);
 }
 
 function addTransaction() {
@@ -56,6 +58,11 @@ function addTransaction() {
 }
 function cancelTransaction() {
   addTransactionPanel.style.display = "none";
+}
+function deleteTransaction(e) {
+  if (e.target.parentElement.classList.contains("delete")) {
+    e.target.closest("div").remove();
+  }
 }
 
 function createTransaction() {
