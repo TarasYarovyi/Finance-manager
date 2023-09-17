@@ -49,8 +49,18 @@ function prepareDOMEvents() {
   addTransactionBtn.addEventListener("click", addTransaction);
   cancelBtn.addEventListener("click", cancelTransaction);
   saveBtn.addEventListener("click", createTransaction);
-  expensesArea.addEventListener("click", deleteTransaction);
-  incomeArea.addEventListener("click", deleteTransaction);
+  document.addEventListener("click", deleteTransaction);
+  deleteAllBtn.addEventListener("click", deleteAllTransaction);
+}
+function deleteAllTransaction() {
+  while (incomeArea.childNodes.length > 2) {
+    incomeArea.removeChild(incomeArea.lastChild);
+  }
+  while (expensesArea.childNodes.length > 2) {
+    expensesArea.removeChild(expensesArea.lastChild);
+  }
+  availableMoney = 0;
+  availableMoneyElement.textContent = availableMoney + " zł";
 }
 
 function addTransaction() {
@@ -61,6 +71,15 @@ function cancelTransaction() {
 }
 function deleteTransaction(e) {
   if (e.target.parentElement.classList.contains("delete")) {
+    const value = e.target.closest("p").dataset.value;
+
+    if (e.target.closest("div").parentElement === incomeArea) {
+      availableMoney -= value;
+    } else {
+      availableMoney += +value;
+    }
+
+    availableMoneyElement.textContent = availableMoney + " zł";
     e.target.closest("div").remove();
   }
 }
@@ -116,6 +135,8 @@ function createTransaction() {
   transactionName.className = "transaction-name";
   transactionName.textContent = addNameInput.value;
   transactionAmount.textContent = amount + " zł";
+  transactionAmount.dataset.value = amount;
+
   transactionAmount.className = "transaction-amount";
   transactionDelete.className = "delete";
   transactionDeleteIcon.className = "fas fa-times";
