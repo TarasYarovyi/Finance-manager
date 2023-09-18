@@ -6,8 +6,8 @@
 
 :root {
     --first-color: #F9F9F9;
-    --second-color: #14161F;
-    --border-color: rgba(0, 0, 0, .2);
+    --second-color: #303239;
+    --border-color: #303239;
 }
 
 body {
