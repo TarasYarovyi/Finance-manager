@@ -18,6 +18,9 @@ let saveBtn;
 let cancelBtn;
 let id = 0;
 let availableMoney = 0;
+let root;
+let lightBtn;
+let darkBtn;
 
 document.addEventListener("DOMContentLoaded", main);
 
@@ -43,6 +46,9 @@ function prepareDOMElements() {
   categoryInfo = document.querySelector(".category-info");
   saveBtn = document.querySelector(".save");
   cancelBtn = document.querySelector(".cancel");
+  root = document.documentElement;
+  lightBtn = document.querySelector(".light");
+  darkBtn = document.querySelector(".dark");
 }
 
 function prepareDOMEvents() {
@@ -51,6 +57,8 @@ function prepareDOMEvents() {
   saveBtn.addEventListener("click", createTransaction);
   document.addEventListener("click", deleteTransaction);
   deleteAllBtn.addEventListener("click", deleteAllTransaction);
+  lightBtn.addEventListener("click", switchLight);
+  darkBtn.addEventListener("click", switchDark);
 }
 function deleteAllTransaction() {
   while (incomeArea.childNodes.length > 2) {
@@ -85,14 +93,16 @@ function deleteTransaction(e) {
 }
 
 function createTransaction() {
-  if (!addNameInput.value) {
-    animate(nameInfo);
-    return;
-  } else if (!addAmountInput.value) {
-    animate(amountInfo);
-    return;
-  } else if (!addCategoryInput.value) {
-    animate(categoryInfo);
+  if (!addNameInput.value || !addAmountInput.value || !addCategoryInput.value) {
+    if (!addNameInput.value) {
+      animate(nameInfo);
+    }
+    if (!addAmountInput.value) {
+      animate(amountInfo);
+    }
+    if (!addCategoryInput.value) {
+      animate(categoryInfo);
+    }
     return;
   }
 
@@ -134,7 +144,7 @@ function createTransaction() {
   transaction.id = ++id;
   transactionName.className = "transaction-name";
   transactionName.textContent = addNameInput.value;
-  transactionAmount.textContent = amount + " zł";
+  transactionAmount.textContent = amount.toFixed(2) + " zł";
   transactionAmount.dataset.value = amount;
 
   transactionAmount.className = "transaction-amount";
@@ -147,7 +157,7 @@ function createTransaction() {
   transactionAmount.appendChild(transactionDelete);
   transactionDelete.appendChild(transactionDeleteIcon);
 
-  availableMoneyElement.textContent = availableMoney + " zł";
+  availableMoneyElement.textContent = availableMoney.toFixed(2) + " zł";
   addTransactionPanel.style.display = "none";
   addNameInput.value = "";
   addAmountInput.value = "";
@@ -159,4 +169,15 @@ function animate(element) {
   setTimeout(() => {
     element.style.animation = "";
   }, 300);
+}
+
+function switchLight() {
+  root.style.setProperty("--first-color", "#F9F9F9");
+  root.style.setProperty("--second-color", "#303239");
+  root.style.setProperty("--border-color", "#303239");
+}
+function switchDark() {
+  root.style.setProperty("--first-color", "#303239");
+  root.style.setProperty("--second-color", "#F9F9F9");
+  root.style.setProperty("--border-color", "#F9F9F9");
 }
